@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import { Document } from 'langchain/document';
-import { MemoryVectorStore } from 'langchain/vectorstores/memory';
-import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
+import { Document } from '@langchain/core/documents';
+import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
+import { OpenAIEmbeddings } from '@langchain/openai';
 
 interface Movie {
   id: number;
