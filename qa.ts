@@ -1,11 +1,11 @@
 import 'dotenv/config';
 import { OpenAI } from 'openai';
 import * as dotenv from 'dotenv';
-import { MemoryVectorStore } from 'langchain/vectorstores/memory';
-import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
-import { YoutubeLoader } from 'langchain/document_loaders/web/youtube';
-import { CharacterTextSplitter } from 'langchain/text_splitter';
-import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
+import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
+import { OpenAIEmbeddings } from '@langchain/openai';
+import { YoutubeLoader } from '@langchain/community/document_loaders/web/youtube';
+import { CharacterTextSplitter } from '@langchain/textsplitters';
+import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
 
 dotenv.config();
 
@@ -37,13 +37,11 @@ export const docsFromYTVideo = async (
     addVideoInfo: true,
   });
 
-  const documents = await loader.loadAndSplit(
-    new CharacterTextSplitter({
-      separator: ' ',
-      chunkSize: 2500,
-      chunkOverlap: 100,
-    })
-  );
+  const documents = await new CharacterTextSplitter({
+    separator: ' ',
+    chunkSize: 2500,
+    chunkOverlap: 100,
+  }).splitDocuments(await loader.load());
 
   return documents.map((doc) => ({
     pageContent: doc.pageContent,
@@ -55,13 +53,11 @@ export const docsFromYTVideo = async (
 export const docsFromPDF = async (): Promise<Document[]> => {
   const loader = new PDFLoader(pdfPath);
 
-  const documents = await loader.loadAndSplit(
-    new CharacterTextSplitter({
-      separator: '. ',
-      chunkSize: 2500,
-      chunkOverlap: 200,
-    })
-  );
+  const documents = await new CharacterTextSplitter({
+    separator: '. ',
+    chunkSize: 2500,
+    chunkOverlap: 200,
+  }).splitDocuments(await loader.load());
 
   return documents.map((doc) => ({
     pageContent: doc.pageContent,
