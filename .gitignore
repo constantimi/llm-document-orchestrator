@@ -23,8 +23,7 @@ out/
 # Windows specific files
 Thumbs.db
 
-# npm package lock
-package-lock.json
+# Other package manager lockfiles (npm's package-lock.json is committed)
 yarn.lock
 
 # Optional: For globally installed dependencies (not often necessary)
